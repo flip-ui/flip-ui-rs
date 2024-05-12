@@ -1,6 +1,6 @@
 # flip-ui-rs
 
-This is the rust integration for handling and compiling the built JSON File.
+Rust integration for handling and compiling the UI built via the Website.
 
 ## Features
 
