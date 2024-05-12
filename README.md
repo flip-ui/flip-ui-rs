@@ -10,7 +10,7 @@ This is the rust integration for handling and compiling the built JSON File.
 
 ## Important Note
 
-Please note that the crate currently works with a different JSON format than the current Website. I am working on a rework of the website!
+Please note that the crate currently works with a different JSON format than the current website. I am working on a rework of the website!
 
 ## Installation
 
