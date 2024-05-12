@@ -1,0 +1,40 @@
+{
+    "views": [
+        {
+            "message": {
+                "header": {
+                    "text": "Header",
+                    "x": 0,
+                    "y": 0,
+                    "horizontal": "Center",
+                    "vertical": "Center"
+                },
+                "text": {
+                    "text": "Header",
+                    "x": 0,
+                    "y": 0,
+                    "horizontal": "Center",
+                    "vertical": "Center"
+                },
+                "buttons": [
+                    {
+                        "text": "first",
+                        "function": "first"
+                    },
+                    {
+                        "text": "second",
+                        "function": "second"
+                    },
+                    {
+                        "text": "third",
+                        "function": "third"
+                    },
+                    {
+                        "text": "back",
+                        "function": "back"
+                    }
+                ]
+            }
+        }
+    ]
+}

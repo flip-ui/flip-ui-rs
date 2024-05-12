@@ -1,0 +1,19 @@
+[package]
+name = "flip-ui"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+harness = false
+
+[dependencies]
+flip-ui-macro = { path = "flip-ui-macro" }
+flipperzero = { git = "https://github.com/flipperzero-rs/flipperzero" }
+
+[dev-dependencies]
+flipperzero_rt = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-rt" }
+flipperzero_test = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-test" }
+
+[[test]]
+name = "test"
+harness = false
