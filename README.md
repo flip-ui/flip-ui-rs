@@ -1,5 +1,9 @@
 # flip-ui-rs
 
+[![crates.io](https://img.shields.io/crates/v/flip-ui.svg)](https://crates.io/crates/flip-ui)
+[![crates.io](https://img.shields.io/crates/d/flip-ui.svg)](https://crates.io/crates/flip-ui)
+[![docs.rs](https://docs.rs/flip-ui/badge.svg)](https://docs.rs/flip-ui)
+
 Rust integration for handling and compiling the UI built via the Website.
 
 ## Features

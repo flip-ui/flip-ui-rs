@@ -1,3 +1,6 @@
+// Generate docs from readme
+#![doc = include_str!("../README.md")]
+
 #![no_std]
 #![no_main]
 
