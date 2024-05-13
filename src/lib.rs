@@ -1,6 +1,5 @@
 // Generate docs from readme
 #![doc = include_str!("../README.md")]
-
 #![no_std]
 #![no_main]
 
@@ -9,8 +8,9 @@ pub use flip_ui_macro::flip_ui;
 
 use core::marker::PhantomData;
 
-use flipperzero::dialogs::{
-    DialogFileBrowserOptions, DialogMessage, DialogMessageButton, DialogsApp,
+use flipperzero::{
+    dialogs::{DialogFileBrowserOptions, DialogMessage, DialogMessageButton, DialogsApp},
+    furi::string::FuriString,
 };
 
 pub struct InputDialog<'a> {
@@ -30,8 +30,8 @@ pub enum Event {
     MessageRight,
     MessageCenter,
     AlertOk,
-    BrowserSelect,
-    Input,
+    BrowserSelect(FuriString),
+    Input(FuriString),
 }
 
 impl<'a> View<'a> {
@@ -45,10 +45,16 @@ impl<'a> View<'a> {
             },
             View::Alert(dialog) => match app.show_message(dialog) {
                 DialogMessageButton::Center => Event::AlertOk,
+                // DialogMessageButton::Back -> todo add this to macro
                 _ => unreachable!(),
             },
-            View::Browser(_) => Event::BrowserSelect,
-            View::Input(_) => Event::Input,
+            // todo: add browser to macro
+            View::Browser(dialog) => match app.show_file_browser(None, Some(dialog)) {
+                Some(path) => Event::BrowserSelect(path),
+                None => Event::MessageBack,
+            },
+            // todo: add everything
+            View::Input(_) => Event::Input(FuriString::new()),
         }
     }
 }
