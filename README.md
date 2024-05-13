@@ -1,4 +1,4 @@
-# flip-ui-rs
+# flip-ui
 
 [![crates.io](https://img.shields.io/crates/v/flip-ui.svg)](https://crates.io/crates/flip-ui)
 [![crates.io](https://img.shields.io/crates/d/flip-ui.svg)](https://crates.io/crates/flip-ui)
@@ -22,7 +22,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-flip_ui = "0.1.0"
+flip_ui = "0.1.1"
 ```
 
 ## Example
