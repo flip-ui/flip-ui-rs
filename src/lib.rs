@@ -1,6 +1,9 @@
 #![no_std]
 #![no_main]
 
+// export proc macro
+pub use flip_ui_macro::flipper_ui;
+
 use core::marker::PhantomData;
 
 use flipperzero::dialogs::{

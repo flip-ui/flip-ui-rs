@@ -4,7 +4,7 @@ Rust integration for handling and compiling the UI built via the Website.
 
 ## Features
 
-- **JSON Integration**: Easily import and manage your UI designs exported from the Flip UI Builder.
+- **JSON Integration**: Easily import and manage your UI designs exported from the [Flip UI Builder](https://flip-ui.github.io/).
 - **UI Rendering**: Efficiently render user interface components on Flipper Zero devices.
 - **Interaction Handling**: Simplified event handling to manage user interactions within your applications.
 
@@ -19,7 +19,6 @@ Add this to your `Cargo.toml`:
 ```toml
 [dependencies]
 flip_ui = { git = "https://github.com/flip-ui/flip-ui-rs" }
-flip_ui_macro = { git = "https://github.com/flip-ui/flip-ui-rs", package = "flip-ui-macro" }
 ```
 
 > An official rust crate release will come when the crate is in a good enough state!
@@ -34,7 +33,7 @@ flip_ui_macro = { git = "https://github.com/flip-ui/flip-ui-rs", package = "flip
 extern crate flipperzero_rt;
 
 use core::ffi::CStr;
-use flip_ui_macro::flipper_ui;
+use flip_ui::flipper_ui;
 use flipperzero_rt::{entry, manifest};
 
 // Define the FAP Manifest for this application

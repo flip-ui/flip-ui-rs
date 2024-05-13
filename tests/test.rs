@@ -1,7 +1,7 @@
 #![no_main]
 #![no_std]
 
-use flip_ui_macro::flipper_ui;
+use flip_ui::flipper_ui;
 
 flipper_ui! {
     MyApp,

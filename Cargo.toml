@@ -2,6 +2,13 @@
 name = "flip-ui"
 version = "0.1.0"
 edition = "2021"
+authors = ["Nils Wrenger <nils@wrenger.net>"]
+description = "Rust integration for handling and compiling the UI built via the UI Flip UI Builder"
+keywords = ["json", "no_std", "macros"]
+categories = ["no-std", "gui", "embedded"]
+repository = "https://github.com/flip-ui/flip-ui-rs"
+readme = "README.md"
+license = "MIT"
 
 [lib]
 harness = false
