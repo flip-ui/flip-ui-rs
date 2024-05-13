@@ -15,7 +15,7 @@ use syn::{parse::Parse, spanned::Spanned};
 ///
 /// ## Example
 /// ```rs
-/// flipper_ui! {
+/// flip_ui! {
 ///     App, // struct name
 ///     "src/main.json", // ui data
 ///     next => next, // helper/custom functions
@@ -23,14 +23,14 @@ use syn::{parse::Parse, spanned::Spanned};
 /// }
 /// ```
 #[proc_macro]
-pub fn flipper_ui(input: pc::TokenStream) -> pc::TokenStream {
-    match flipper_ui_inner(input.into()) {
+pub fn flip_ui(input: pc::TokenStream) -> pc::TokenStream {
+    match flip_ui_inner(input.into()) {
         Ok(result) => result.into(),
         Err(e) => e.into_compile_error().into(),
     }
 }
 
-fn flipper_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
+fn flip_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
     let span = input.span();
     let args = syn::parse2::<Args>(input)?;
 

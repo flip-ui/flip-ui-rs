@@ -1,9 +1,9 @@
 #![no_main]
 #![no_std]
 
-use flip_ui::flipper_ui;
+use flip_ui::flip_ui;
 
-flipper_ui! {
+flip_ui! {
     MyApp,
     "tests/main.json",
     close => close,

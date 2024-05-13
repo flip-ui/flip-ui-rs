@@ -33,7 +33,7 @@ flip_ui = { git = "https://github.com/flip-ui/flip-ui-rs" }
 extern crate flipperzero_rt;
 
 use core::ffi::CStr;
-use flip_ui::flipper_ui;
+use flip_ui::flip_ui;
 use flipperzero_rt::{entry, manifest};
 
 // Define the FAP Manifest for this application
@@ -47,7 +47,7 @@ manifest!(
 entry!(main);
 
 // Getting UI data && events
-flipper_ui! {
+flip_ui! {
 	App,
 	"src/main.json",
 	next => next,

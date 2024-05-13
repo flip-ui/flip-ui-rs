@@ -2,7 +2,7 @@
 #![no_main]
 
 // export proc macro
-pub use flip_ui_macro::flipper_ui;
+pub use flip_ui_macro::flip_ui;
 
 use core::marker::PhantomData;
 
