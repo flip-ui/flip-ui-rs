@@ -181,7 +181,7 @@ impl ToTokens for View {
                     vertical,
                 }) = header
                 {
-                    let text = c_str(&text);
+                    let text = c_str(text);
                     expand
                         .extend(quote! {dialog.set_header(#text, #x, #y, #horizontal, #vertical);})
                 }
@@ -193,7 +193,7 @@ impl ToTokens for View {
                     vertical,
                 }) = text
                 {
-                    let text = c_str(&text);
+                    let text = c_str(text);
                     expand.extend(quote! {dialog.set_text(#text, #x, #y, #horizontal, #vertical);})
                 }
                 if let Some(buttons) = buttons {
