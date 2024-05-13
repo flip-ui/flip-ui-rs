@@ -1,3 +1,5 @@
+#![allow(clippy::large_enum_variant)]
+
 use std::{ffi::CString, fmt, fs};
 
 use proc_macro as pc;
