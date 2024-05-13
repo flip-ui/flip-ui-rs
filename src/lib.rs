@@ -31,13 +31,16 @@ pub enum Event {
 impl<'a> View<'a> {
     pub fn show(&self, app: &mut DialogsApp) -> Event {
         match self {
-            View::Message(dialog) => match app.show_message(&dialog) {
+            View::Message(dialog) => match app.show_message(dialog) {
                 DialogMessageButton::Back => Event::MessageBack,
                 DialogMessageButton::Left => Event::MessageLeft,
                 DialogMessageButton::Right => Event::MessageRight,
                 DialogMessageButton::Center => Event::MessageCenter,
             },
-            View::Alert(_) => Event::AlertOk,
+            View::Alert(dialog) => match app.show_message(dialog) {
+                DialogMessageButton::Center => Event::AlertOk,
+                _ => unreachable!(),
+            },
             View::Browser(_) => Event::BrowserSelect,
             View::Input(_) => Event::Input,
         }

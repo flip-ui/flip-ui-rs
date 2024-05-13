@@ -6,9 +6,9 @@ use flip_ui_macro::flipper_ui;
 flipper_ui! {
     MyApp,
     "tests/main.json",
-    first => close,
-    second => next,
-    third => back,
+    close => close,
+    next => next,
+    back => back,
 }
 
 #[flipperzero_test::tests]

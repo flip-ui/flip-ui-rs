@@ -18,22 +18,28 @@
                 },
                 "buttons": [
                     {
-                        "text": "first",
-                        "function": "first"
+                        "text": "Go Back",
+                        "function": "back"
                     },
                     {
-                        "text": "second",
-                        "function": "second"
+                        "text": "Next View",
+                        "function": "next"
                     },
                     {
-                        "text": "third",
-                        "function": "third"
+                        "text": "Close the App",
+                        "function": "close"
                     },
                     {
-                        "text": "back",
+                        "text": "Go Back",
                         "function": "back"
                     }
                 ]
+            }
+        },
+        {
+            "alert": {
+                "text": "Hey, click \"Ok\" to go further!",
+                "function": "next"
             }
         }
     ]

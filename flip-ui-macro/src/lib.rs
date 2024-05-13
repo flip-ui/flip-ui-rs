@@ -55,6 +55,12 @@ fn flipper_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
                         }
                     }
                 }
+                View::Alert(e) => {
+                    if e.function == name {
+                        let e = quote!(flip_ui::Event::AlertOk);
+                        handlers.extend(quote!( (#i, #e) => #path(self), ))
+                    }
+                }
             }
         }
     }
@@ -154,6 +160,8 @@ struct Data {
 enum View {
     #[serde(rename = "message")]
     Message(MessageData),
+    #[serde(rename = "alert")]
+    Alert(Event),
 }
 
 impl ToTokens for View {
@@ -207,6 +215,19 @@ impl ToTokens for View {
                     flip_ui::View::Message({
                         let mut dialog = flipperzero::dialogs::DialogMessage::new();
                         #expand
+                        dialog
+                    })
+                })
+            }
+            View::Alert(text) => {
+                let text = c_str(&text.text);
+                tokens.extend(quote! {
+                    flip_ui::View::Alert({
+                        let mut dialog = flipperzero::dialogs::DialogMessage::new();
+
+                        dialog.set_text(#text, 0, 0, flipperzero::gui::canvas::Align::Left, flipperzero::gui::canvas::Align::Top);
+                        dialog.set_buttons(None, Some(c"OK"), None);
+
                         dialog
                     })
                 })
