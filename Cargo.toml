@@ -1,6 +1,6 @@
 [package]
 name = "flip-ui"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Nils Wrenger <nils@wrenger.net>"]
 description = "Rust integration for handling and compiling the UI built via the UI Flip UI Builder"
@@ -19,12 +19,12 @@ targets = []
 harness = false
 
 [dependencies]
-flip-ui-macro = { path = "macro", version = "0.1.0" }
-flipperzero = { git = "https://github.com/flipperzero-rs/flipperzero", version = "0.11.0" }
+flip-ui-macro = { path = "macro", version = "0.1.2" }
+flipperzero = { git = "https://github.com/flipperzero-rs/flipperzero", version = "*" }
 
 [dev-dependencies]
-flipperzero_rt = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-rt", version = "0.11.0" }
-flipperzero_test = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-test", version = "0.11.0" }
+flipperzero_rt = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-rt", version = "*" }
+flipperzero_test = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-test", version = "*" }
 
 [[test]]
 name = "test"
