@@ -6,6 +6,7 @@ authors = ["Nils Wrenger <nils@wrenger.net>"]
 description = "Rust integration for handling and compiling the UI built via the UI Flip UI Builder"
 keywords = ["json", "no_std", "macros"]
 categories = ["no-std", "gui", "embedded"]
+rust-version = "1.70.0"
 repository = "https://github.com/flip-ui/flip-ui-rs"
 readme = "README.md"
 license = "MIT"
@@ -14,12 +15,12 @@ license = "MIT"
 harness = false
 
 [dependencies]
-flip-ui-macro = { path = "flip-ui-macro" }
-flipperzero = { git = "https://github.com/flipperzero-rs/flipperzero" }
+flip-ui-macro = { path = "macro", version = "*" }
+flipperzero = { git = "https://github.com/flipperzero-rs/flipperzero", version = "*" }
 
 [dev-dependencies]
-flipperzero_rt = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-rt" }
-flipperzero_test = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-test" }
+flipperzero_rt = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-rt", version = "*" }
+flipperzero_test = { git = "https://github.com/flipperzero-rs/flipperzero", package = "flipperzero-test", version = "*" }
 
 [[test]]
 name = "test"

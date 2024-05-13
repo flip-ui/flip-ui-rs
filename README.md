@@ -18,10 +18,8 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-flip_ui = { git = "https://github.com/flip-ui/flip-ui-rs" }
+flip_ui = "0.1.0"
 ```
-
-> An official rust crate release will come when the crate is in a good enough state!
 
 ## Example
 
