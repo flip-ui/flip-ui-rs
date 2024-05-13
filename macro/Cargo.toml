@@ -2,6 +2,7 @@
 name = "flip-ui-macro"
 version = "0.1.0"
 edition = "2021"
+description = "Procedural macros for flip-ui"
 rust-version = "1.70.0"
 repository = "https://github.com/flip-ui/flip-ui-rs"
 readme = "../README.md"
