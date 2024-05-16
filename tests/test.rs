@@ -9,6 +9,7 @@ flip_ui! {
     close => close,
     next => next,
     back => back,
+    none => none,
 }
 
 #[flipperzero_test::tests]

@@ -18,10 +18,6 @@
                 },
                 "buttons": [
                     {
-                        "text": "Go Back",
-                        "function": "back"
-                    },
-                    {
                         "text": "Next View",
                         "function": "next"
                     },
@@ -33,13 +29,15 @@
                         "text": "Go Back",
                         "function": "back"
                     }
-                ]
+                ],
+                "back_function": "back"
             }
         },
         {
             "alert": {
-                "text": "Hey, click \"Ok\" to go further!",
-                "function": "next"
+                "text": "Hey, click \"Ok\" to go further! Can't go back!",
+                "function": "next",
+                "back_function": "none"
             }
         }
     ]

@@ -25,7 +25,7 @@ pub enum View<'a> {
 }
 
 pub enum Event {
-    MessageBack,
+    Back,
     MessageLeft,
     MessageRight,
     MessageCenter,
@@ -38,20 +38,20 @@ impl<'a> View<'a> {
     pub fn show(&self, app: &mut DialogsApp) -> Event {
         match self {
             View::Message(dialog) => match app.show_message(dialog) {
-                DialogMessageButton::Back => Event::MessageBack,
+                DialogMessageButton::Back => Event::Back,
                 DialogMessageButton::Left => Event::MessageLeft,
                 DialogMessageButton::Right => Event::MessageRight,
                 DialogMessageButton::Center => Event::MessageCenter,
             },
             View::Alert(dialog) => match app.show_message(dialog) {
                 DialogMessageButton::Center => Event::AlertOk,
-                // DialogMessageButton::Back -> todo add this to macro
+                DialogMessageButton::Back => Event::Back,
                 _ => unreachable!(),
             },
             // todo: add browser to macro
             View::Browser(dialog) => match app.show_file_browser(None, Some(dialog)) {
                 Some(path) => Event::BrowserSelect(path),
-                None => Event::MessageBack,
+                None => Event::Back,
             },
             // todo: add everything
             View::Input(_) => Event::Input(FuriString::new()),

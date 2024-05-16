@@ -21,7 +21,9 @@ use syn::{parse::Parse, spanned::Spanned};
 ///     App, // struct name
 ///     "src/main.json", // ui data
 ///     next => next, // helper/custom functions
+///     back => back,
 ///     close => close,
+///     none => none,
 /// }
 /// ```
 #[proc_macro]
@@ -56,10 +58,17 @@ fn flip_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
                             }
                         }
                     }
+                    if message.back_function == name {
+                        let e = quote!(flip_ui::Event::Back);
+                        handlers.extend(quote!( (#i, #e) => #path(self), ))
+                    }
                 }
                 View::Alert(e) => {
                     if e.function == name {
                         let e = quote!(flip_ui::Event::AlertOk);
+                        handlers.extend(quote!( (#i, #e) => #path(self), ))
+                    } else if e.back_function == name {
+                        let e = quote!(flip_ui::Event::Back);
                         handlers.extend(quote!( (#i, #e) => #path(self), ))
                     }
                 }
@@ -116,6 +125,9 @@ fn flip_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
         fn next(app: &mut #app_ident) {
             app.current = Some(app.current.unwrap_or(0) + 1)
         }
+
+        /// Placeholder event for doing nothing
+        fn none(app: &mut #app_ident) {}
     })
 }
 
@@ -163,7 +175,7 @@ enum View {
     #[serde(rename = "message")]
     Message(MessageData),
     #[serde(rename = "alert")]
-    Alert(Event),
+    Alert(AlertData),
 }
 
 impl ToTokens for View {
@@ -173,6 +185,7 @@ impl ToTokens for View {
                 header,
                 text,
                 buttons,
+                ..
             }) => {
                 let mut expand = quote! {};
                 if let Some(Label {
@@ -199,15 +212,15 @@ impl ToTokens for View {
                     expand.extend(quote! {dialog.set_text(#text, #x, #y, #horizontal, #vertical);})
                 }
                 if let Some(buttons) = buttons {
-                    let bl = buttons[1].as_ref().map_or(quote! {None}, |b| {
+                    let bl = buttons[0].as_ref().map_or(quote! {None}, |b| {
                         let s = c_str(&b.text);
                         quote! { Some(#s) }
                     });
-                    let bc = buttons[2].as_ref().map_or(quote! {None}, |b| {
+                    let bc = buttons[1].as_ref().map_or(quote! {None}, |b| {
                         let s = c_str(&b.text);
                         quote! { Some(#s) }
                     });
-                    let br = buttons[3].as_ref().map_or(quote! {None}, |b| {
+                    let br = buttons[2].as_ref().map_or(quote! {None}, |b| {
                         let s = c_str(&b.text);
                         quote! { Some(#s) }
                     });
@@ -221,8 +234,8 @@ impl ToTokens for View {
                     })
                 })
             }
-            View::Alert(text) => {
-                let text = c_str(&text.text);
+            View::Alert(AlertData { text, .. }) => {
+                let text = c_str(&text);
                 tokens.extend(quote! {
                     flip_ui::View::Alert({
                         let mut dialog = flipperzero::dialogs::DialogMessage::new();
@@ -246,7 +259,15 @@ fn c_str(s: &str) -> syn::LitCStr {
 struct MessageData {
     header: Option<Label>,
     text: Option<Label>,
-    buttons: Option<[Option<Event>; 4]>,
+    buttons: Option<[Option<Event>; 3]>,
+    back_function: String,
+}
+
+#[derive(Deserialize)]
+struct AlertData {
+    text: String,
+    function: String,
+    back_function: String,
 }
 
 #[derive(Deserialize)]
@@ -287,10 +308,9 @@ impl ToTokens for Align {
 
 fn event_from_id(id: usize) -> TokenStream {
     match id {
-        0 => quote!(flip_ui::Event::MessageBack),
-        1 => quote!(flip_ui::Event::MessageLeft),
-        2 => quote!(flip_ui::Event::MessageRight),
-        3 => quote!(flip_ui::Event::MessageCenter),
+        0 => quote!(flip_ui::Event::MessageLeft),
+        1 => quote!(flip_ui::Event::MessageRight),
+        2 => quote!(flip_ui::Event::MessageCenter),
         _ => todo!(),
     }
 }
