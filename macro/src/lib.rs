@@ -4,6 +4,7 @@ use std::{ffi::CString, fmt, fs};
 
 use proc_macro as pc;
 use proc_macro2::{Span, TokenStream};
+use proc_macro_error::{abort, proc_macro_error};
 use quote::{quote, ToTokens};
 use serde::Deserialize;
 use syn::{parse::Parse, spanned::Spanned};
@@ -14,6 +15,7 @@ use syn::{parse::Parse, spanned::Spanned};
 /// - `next`
 /// - `back`
 /// - `close`
+/// - `none`
 ///
 /// ## Example
 /// ```rs
@@ -26,6 +28,7 @@ use syn::{parse::Parse, spanned::Spanned};
 ///     none => none,
 /// }
 /// ```
+#[proc_macro_error]
 #[proc_macro]
 pub fn flip_ui(input: pc::TokenStream) -> pc::TokenStream {
     match flip_ui_inner(input.into()) {
@@ -42,37 +45,82 @@ fn flip_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
     let data: Data = serde_json::from_str(&s).map_err(|e| s_err(span, e.to_string()))?;
     let views = data.views;
 
+    // Collect all functions mentioned in views
+    let functions: Vec<&String> = views
+        .iter()
+        .flat_map(|view| match view {
+            View::Message(message) => {
+                let mut funcs = vec![];
+                if let Some(buttons) = &message.buttons {
+                    funcs.extend(buttons.iter().flatten().map(|button| &button.function));
+                }
+                funcs.push(&message.back_function);
+                funcs
+            }
+            View::Alert(alert) => vec![&alert.function, &alert.back_function],
+        })
+        .collect();
+
+    // Go through all mentioned handler in the proc macro
     let mut handlers = TokenStream::new();
+    let mut used_handlers = vec![];
     for (ident, path) in args.handler {
         let name = ident.to_string();
-        for (i, page) in views.iter().enumerate() {
-            match page {
+        let mut used = false;
+
+        for (i, view) in views.iter().enumerate() {
+            match view {
                 View::Message(message) => {
                     if let Some(buttons) = &message.buttons {
                         for (e, button) in buttons.iter().enumerate() {
-                            if let Some(b) = button {
-                                if b.function == name {
+                            if let Some(button) = button {
+                                if button.function == name {
+                                    used = true;
                                     let e = event_from_id(e);
-                                    handlers.extend(quote!( (#i, #e) => #path(self), ))
+                                    handlers.extend(quote!((#i, #e) => #path(self),));
                                 }
                             }
                         }
                     }
                     if message.back_function == name {
+                        used = true;
                         let e = quote!(flip_ui::Event::Back);
-                        handlers.extend(quote!( (#i, #e) => #path(self), ))
+                        handlers.extend(quote!((#i, #e) => #path(self),));
                     }
                 }
-                View::Alert(e) => {
-                    if e.function == name {
+                View::Alert(alert) => {
+                    if alert.function == name {
+                        used = true;
                         let e = quote!(flip_ui::Event::AlertOk);
-                        handlers.extend(quote!( (#i, #e) => #path(self), ))
-                    } else if e.back_function == name {
+                        handlers.extend(quote!((#i, #e) => #path(self),));
+                    }
+                    if alert.back_function == name {
+                        used = true;
                         let e = quote!(flip_ui::Event::Back);
-                        handlers.extend(quote!( (#i, #e) => #path(self), ))
+                        handlers.extend(quote!((#i, #e) => #path(self),));
                     }
                 }
             }
+        }
+
+        // Check if there are unused handler
+        if !used {
+            abort!(ident.span(), format!("Unused handler function: {}", name));
+        } else {
+            used_handlers.push(name.clone());
+        }
+    }
+
+    // Finally check if all functions could be satisfied
+    for function in functions {
+        if !used_handlers.contains(function) {
+            abort!(
+                Span::call_site(),
+                format!(
+                    "Specified function '{}' does not have a corresponding handler.",
+                    function
+                )
+            );
         }
     }
 
@@ -105,7 +153,7 @@ fn flip_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
                     let event = self.views[current].show(&mut self.inner);
                     match (current, event) {
                         #handlers
-                        _ => panic!("Unexpected event"),
+                        _ => unreachable!(),
                     }
                 }
             }
@@ -235,7 +283,7 @@ impl ToTokens for View {
                 })
             }
             View::Alert(AlertData { text, .. }) => {
-                let text = c_str(&text);
+                let text = c_str(text);
                 tokens.extend(quote! {
                     flip_ui::View::Alert({
                         let mut dialog = flipperzero::dialogs::DialogMessage::new();
