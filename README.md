@@ -12,10 +12,6 @@ Rust integration for handling and compiling the UI built via the Website.
 - **UI Rendering**: Efficiently render user interface components on Flipper Zero devices.
 - **Interaction Handling**: Simplified event handling to manage user interactions within your applications.
 
-## Important Note
-
-Please note that the crate currently works with a different JSON format than the current website. I am working on a rework of the website!
-
 ## Installation
 
 Add this to your `Cargo.toml`:
