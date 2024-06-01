@@ -18,7 +18,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-flip_ui = "0.1.1"
+flip_ui = "0.1.3"
 ```
 
 ## Example

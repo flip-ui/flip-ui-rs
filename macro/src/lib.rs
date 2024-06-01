@@ -4,10 +4,13 @@ use std::{ffi::CString, fmt, fs};
 
 use proc_macro as pc;
 use proc_macro2::{Span, TokenStream};
-use proc_macro_error::{abort, proc_macro_error};
 use quote::{quote, ToTokens};
 use serde::Deserialize;
 use syn::{parse::Parse, spanned::Spanned};
+
+fn s_err(span: proc_macro2::Span, msg: impl fmt::Display) -> syn::Error {
+    syn::Error::new(span, msg)
+}
 
 /// Creates the App struct with the running logic
 ///
@@ -28,7 +31,6 @@ use syn::{parse::Parse, spanned::Spanned};
 ///     none => none,
 /// }
 /// ```
-#[proc_macro_error]
 #[proc_macro]
 pub fn flip_ui(input: pc::TokenStream) -> pc::TokenStream {
     match flip_ui_inner(input.into()) {
@@ -105,7 +107,10 @@ fn flip_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
 
         // Check if there are unused handler
         if !used {
-            abort!(ident.span(), format!("Unused handler function: {}", name));
+            return Err(s_err(
+                ident.span(),
+                format!("Unused handler function: {}", name),
+            ));
         } else {
             used_handlers.push(name.clone());
         }
@@ -114,13 +119,13 @@ fn flip_ui_inner(input: TokenStream) -> syn::Result<TokenStream> {
     // Finally check if all functions could be satisfied
     for function in functions {
         if !used_handlers.contains(function) {
-            abort!(
+            return Err(s_err(
                 Span::call_site(),
                 format!(
                     "Specified function '{}' does not have a corresponding handler.",
                     function
-                )
-            );
+                ),
+            ));
         }
     }
 
@@ -207,10 +212,6 @@ impl Parse for Args {
 
         Ok(Self { ty, path, handler })
     }
-}
-
-fn s_err(span: proc_macro2::Span, msg: impl fmt::Display) -> syn::Error {
-    syn::Error::new(span, msg)
 }
 
 #[derive(Deserialize)]
