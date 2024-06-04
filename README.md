@@ -8,7 +8,7 @@ Rust integration for handling and compiling the UI built via the Website.
 
 ## Features
 
-- **JSON Integration**: Easily import and manage your UI designs exported from the [Flip UI Builder](https://flip-ui.github.io/).
+- **JSON Integration**: Easily import and manage your UI designs exported from the [Flip UI Builder](https://flip.nwrenger.dev/).
 - **UI Rendering**: Efficiently render user interface components on Flipper Zero devices.
 - **Interaction Handling**: Simplified event handling to manage user interactions within your applications.
 
