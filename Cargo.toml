@@ -9,7 +9,7 @@ categories = ["no-std", "gui", "embedded"]
 rust-version = "1.70.0"
 repository = "https://github.com/flip-ui/flip-ui-rs"
 readme = "README.md"
-license = "MIT"
+license = "GPL-3.0-or-later"
 
 [package.metadata.docs.rs]
 default-target = "thumbv7em-none-eabihf"
